@@ -2,7 +2,6 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	{$Html->css('cake.generic')}
 	<title>CakePHP Sample01</title>
 </head>
 <body>
@@ -13,7 +12,7 @@
 	<table border="1">
 		<tr>
 			<th>注文コード</th>
-			<td></td>
+			<td>{$data.Member.id}</td>
 		</tr>
 		<tr>
 			<th>注文日時</th>

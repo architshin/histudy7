@@ -8,6 +8,7 @@ class SmartyView extends View {
 				$var = $this->_passedVars[$j];
 				$this->{$var} = $controller->{$var};
 			}
+			$this->_eventManager = $controller->getEventManager();
 		}
 
 		if(!App::import('Vendor', 'Smarty', array('file' => 'smarty'.DS.'Smarty.class.php')))
@@ -22,11 +23,12 @@ class SmartyView extends View {
 		$this->Smarty->compile_dir = TMP.'smarty'.DS.'compile'.DS;
 		$this->Smarty->cache_dir = TMP.'smarty'.DS.'cache'.DS;
 		$this->Smarty->error_reporting = 'E_ALL & ~E_NOTICE';
-		$this->Smarty->debugging = true;
+		$this->Smarty->debugging = false;
 		$this->Smarty->compile_check = true;
 		$this->viewVars['params'] = $this->params;
 
 		$this->Helpers = new HelperCollection($this);
+		$this->Blocks = new ViewBlock();
 	}
 
 	protected function _render($___viewFn, $___dataForView = array()) {
@@ -48,22 +50,24 @@ class SmartyView extends View {
 		}
 		// I do it to have the element method (I use it for example with this syntax: {$View->element("sql_dump")} )
 		$this->Smarty->assign('View', new View(null));
-
+		$this->Smarty->assign('this', $this);
+		
+				
 		ob_start();
 		$this->Smarty->display($___viewFn);
 		return ob_get_clean();
 	}
 	
 	// I pass the helper object to smarty so I can do: {$Html->link("link test", 'http://cakephp.org')} or {$Session->flash()}
-	public function loadHelpers() {
-		$helpers = HelperCollection::normalizeObjectArray($this->helpers);
-		foreach ($helpers as $name => $properties) {
-			list($plugin, $class) = pluginSplit($properties['class']);
-			$this->{$class} = $this->Helpers->load($properties['class'], $properties['settings']);
-			$this->Smarty->assign($name, $this->{$class});
-		}
-		$this->_helpersLoaded = true;
-	}
+// 	public function loadHelpers() {
+// 		$helpers = HelperCollection::normalizeObjectArray($this->helpers);
+// 		foreach ($helpers as $name => $properties) {
+// 			list($plugin, $class) = pluginSplit($properties['class']);
+// 			$this->{$class} = $this->Helpers->load($properties['class'], $properties['settings']);
+// 			$this->Smarty->assign($name, $this->{$class});
+// 		}
+// 		$this->_helpersLoaded = true;
+// 	}
 }
 
 ?>
