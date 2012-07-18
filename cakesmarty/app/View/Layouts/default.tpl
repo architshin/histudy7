@@ -24,7 +24,7 @@
 			{$this->fetch('content')}
 		</div>
 		<div id="footer">
-			<a href="http://www.cakephp.org/" target="_blank"><img src="/histudy7/cakesmarty/img/cake.power.gif" alt="CakePHP: the rapid development php framework" border="0" />
+			<a href="http://www.cakephp.org/" target="_blank">{$this->Html->image('cake.power.gif')}</a>
 		</div>
 	</div>
 	{$View->element('sql_dump')}

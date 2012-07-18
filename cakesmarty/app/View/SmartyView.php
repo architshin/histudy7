@@ -17,7 +17,6 @@ class SmartyView extends View {
 
 		$this->subDir = '';
 
-		// The extension to check, without it I can have smarty template and normal template in the same project / controller
 		$this->ext= '.tpl';
 		$this->Smarty->plugins_dir[] = VENDORS.DS.'smarty'.DS.'plugins';
 		$this->Smarty->compile_dir = TMP.'smarty'.DS.'compile'.DS;
@@ -32,7 +31,6 @@ class SmartyView extends View {
 	}
 
 	protected function _render($___viewFn, $___dataForView = array()) {
-	// I want that element will not use Smarty because they can have some php and developing logic so I use this tree line to process it with the cake rendering. Probably it isn't so nice but I don't know a better way
 		$trace = debug_backtrace();
 		$caller = array_shift($trace);
 		if ($caller === "element") parent::_render($___viewFn, $___dataForView);
@@ -48,26 +46,13 @@ class SmartyView extends View {
 				$this->Smarty->assign($data, $value);
 			}
 		}
-		// I do it to have the element method (I use it for example with this syntax: {$View->element("sql_dump")} )
 		$this->Smarty->assign('View', new View(null));
 		$this->Smarty->assign('this', $this);
-		
 				
 		ob_start();
 		$this->Smarty->display($___viewFn);
 		return ob_get_clean();
 	}
-	
-	// I pass the helper object to smarty so I can do: {$Html->link("link test", 'http://cakephp.org')} or {$Session->flash()}
-// 	public function loadHelpers() {
-// 		$helpers = HelperCollection::normalizeObjectArray($this->helpers);
-// 		foreach ($helpers as $name => $properties) {
-// 			list($plugin, $class) = pluginSplit($properties['class']);
-// 			$this->{$class} = $this->Helpers->load($properties['class'], $properties['settings']);
-// 			$this->Smarty->assign($name, $this->{$class});
-// 		}
-// 		$this->_helpersLoaded = true;
-// 	}
 }
 
 ?>
